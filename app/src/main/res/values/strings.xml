@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Triviality</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_result">ResultActivity</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="splash_screen_text">Αυτή η εφαρμογή δημιουργήθηκε στα πλαίσια του μαθήματος "Διάχυτα και
+        Ενσωματωμένα συστήματα 2014 - 2015"</string>
+    <string name="choose_answer">Επιλέξτε την σωστή απάντηση και
+        πατήστε Next για να προχωρήσετε στην επόμενη ερώτηση</string>
+    <string name="title_activity_intro">IntroActivity</string>
+</resources>
