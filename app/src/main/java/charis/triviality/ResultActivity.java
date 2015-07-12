@@ -30,7 +30,7 @@ public class ResultActivity extends Activity {
         TextView t=(TextView)findViewById(R.id.textResult);
         //get score
         Bundle b = getIntent().getExtras();
-        int score= b.getInt("score");
+        int score = b.getInt("score");
         time = b.getString("time");
         //display time
         TextView TextView3 = (TextView) findViewById(R.id.textView3);

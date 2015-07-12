@@ -29,6 +29,8 @@ public class QuizActivity extends Activity
     RadioButton rda, rdb, rdc;
     Button butNext;
     TextView timerTextView;
+    boolean Train;
+
 
     //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
@@ -61,9 +63,20 @@ public class QuizActivity extends Activity
         rdc=(RadioButton)findViewById(R.id.radio2);
         butNext=(Button)findViewById(R.id.button1);
         timerTextView = (TextView) findViewById(R.id.timerTextView);
+        //Bundle b = getIntent().getExtras();
+        //Train = b.getBoolean("IsTraining");
+        Log.i("training in view create", String.valueOf(Train));
+
+        Intent intent;
+        intent = getIntent ();
+        Train = intent.getBooleanExtra ("IsTraining", true);
         setQuestionView();
         startTime = System.currentTimeMillis();
         timerHandler.postDelayed(timerRunnable, 0);
+
+
+
+
 
         butNext.setOnClickListener(new View.OnClickListener()
         {
@@ -115,6 +128,16 @@ public class QuizActivity extends Activity
 
     private void setQuestionView()
     {
+
+        Log.i("training in view", String.valueOf(Train));
+        if (Train)
+        {
+            Log.i("training in view", "skata");
+
+        }else{        Log.i("training in view", "skata2");
+        }
+
+
         txtQuestion.setText(currentQ.getQUESTION());
         rda.setText(currentQ.getOPTA());
         rdb.setText(currentQ.getOPTB());

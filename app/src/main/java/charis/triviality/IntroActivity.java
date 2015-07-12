@@ -16,6 +16,8 @@ import android.widget.Toast;
 public class IntroActivity extends Activity {
 
     Button butNext;
+    RadioButton RbTrain;
+    boolean Train;
 
 
     @Override
@@ -39,11 +41,18 @@ public class IntroActivity extends Activity {
                 }
                 else
                 {
+                    RbTrain = (RadioButton)findViewById(R.id.selfTrain);
+                    Log.i("training before checked", String.valueOf(Train));
+
+
                     Intent intent = new Intent(IntroActivity.this, QuizActivity.class);
-                    //Bundle b = new Bundle();
-                    //b.putInt("score", score); //Your score
-                    //intent.putExtras(b); //Put your score to your next Intent
+                    Bundle Bu = new Bundle ();
+                    Train = RbTrain.isChecked();
+                    Bu.putBoolean("IsTraining", Train);
+                    intent.putExtras(Bu);
                     startActivity(intent);
+                    Log.i("training after checked", String.valueOf(Train));
+
                     finish();
                 }
             }
