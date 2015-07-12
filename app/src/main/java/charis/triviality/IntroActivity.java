@@ -42,17 +42,12 @@ public class IntroActivity extends Activity {
                 else
                 {
                     RbTrain = (RadioButton)findViewById(R.id.selfTrain);
-                    Log.i("training before checked", String.valueOf(Train));
-
-
                     Intent intent = new Intent(IntroActivity.this, QuizActivity.class);
                     Bundle Bu = new Bundle ();
                     Train = RbTrain.isChecked();
                     Bu.putBoolean("IsTraining", Train);
                     intent.putExtras(Bu);
                     startActivity(intent);
-                    Log.i("training after checked", String.valueOf(Train));
-
                     finish();
                 }
             }
@@ -87,5 +82,10 @@ public class IntroActivity extends Activity {
         Intent i = new Intent(this, MusicService.class);
         //stopService(i);
         super.onDestroy();
+    }
+
+    public void onBackPressed()
+    {
+
     }
 }

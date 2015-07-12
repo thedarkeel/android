@@ -28,8 +28,8 @@ public class QuizActivity extends Activity
     TextView txtQuestion;
     RadioButton rda, rdb, rdc;
     Button butNext;
-    TextView timerTextView;
-    boolean Train;
+    TextView timerTextView, wrong;
+    public boolean train;
 
 
     //runs without a timer by reposting this handler at the end of the runnable
@@ -62,21 +62,15 @@ public class QuizActivity extends Activity
         rdb=(RadioButton)findViewById(R.id.radio1);
         rdc=(RadioButton)findViewById(R.id.radio2);
         butNext=(Button)findViewById(R.id.button1);
+        wrong = (TextView)findViewById(R.id.answer);
         timerTextView = (TextView) findViewById(R.id.timerTextView);
-        //Bundle b = getIntent().getExtras();
-        //Train = b.getBoolean("IsTraining");
-        Log.i("training in view create", String.valueOf(Train));
-
         Intent intent;
         intent = getIntent ();
-        Train = intent.getBooleanExtra ("IsTraining", true);
-        setQuestionView();
+        train = intent.getBooleanExtra ("IsTraining", true);
+
+        setQuestionView(train);
         startTime = System.currentTimeMillis();
         timerHandler.postDelayed(timerRunnable, 0);
-
-
-
-
 
         butNext.setOnClickListener(new View.OnClickListener()
         {
@@ -92,15 +86,23 @@ public class QuizActivity extends Activity
                 }
                 else
                 {
-                    if (currentQ.getANSWER().equals(answer.getText()))
+                    if (train)
                     {
-                        score++;
-                        Log.d("score", "Your score" + score);
+                        if (currentQ.getANSWER().equals(answer.getText()))
+                        {
+                            score++;
+                            wrong.setText("Σωστά!");
+                        }
+                        else
+                        {
+                            wrong.setText("Λάθος!");
+                        }
+
                     }
                     if (qid < 5)
                     {
                         currentQ = quesList.get(qid);
-                        setQuestionView();
+                        setQuestionView(train);
                     }
                     else
                     {
@@ -126,11 +128,10 @@ public class QuizActivity extends Activity
         return true;
     }
 
-    private void setQuestionView()
+    private void setQuestionView(boolean mode)
     {
 
-        Log.i("training in view", String.valueOf(Train));
-        if (Train)
+        if (mode)
         {
             Log.i("training in view", "skata");
 
