@@ -19,20 +19,24 @@ public class MusicService extends Service
 
    MediaPlayer mp;
 
-        public void onCreate()
-        {
-            mp = MediaPlayer.create(this, R.raw.born_in_winter);
-            mp.setLooping(false);
-        }
-        public void onDestroy()
-        {
-            mp.stop();
-        }
-        @Override
-        public void onStart(Intent intent,int startid){
+    public void onCreate()
+    {
+        mp = MediaPlayer.create(this, R.raw.born_in_winter);
+        mp.setLooping(true);
 
-            Log.d("tag", "On start");
-            mp.start();
-        }
+    }
+
+    public void onDestroy()
+    {
+        mp.stop();
+        mp.release();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId)
+    {
+        mp.start();
+        return Service.START_NOT_STICKY;
+    }
 
 }

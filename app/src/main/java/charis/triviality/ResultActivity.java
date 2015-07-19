@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -55,6 +56,39 @@ public class ResultActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_result, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        switch (item.getItemId()) {
+            case R.id.music_on:
+                if (item.isChecked()) item.setChecked(false);
+                else
+                {item.setChecked(true);
+                    Intent i = new Intent(this, MusicService.class);
+                    Log.i("music", "music service started");
+                    startService(i);
+                    return true;}
+            case R.id.music_off:
+                if (item.isChecked()) item.setChecked(false);
+                else
+                {item.setChecked(true);
+                    Intent in = new Intent(this, MusicService.class);
+                    Log.i("music", "music service stopped");
+                    stopService(in);
+                    return true;}
+            case R.id.action_settings:
+                if (item.isChecked()) item.setChecked(false);
+                else item.setChecked(true);
+                //mainLayout.setBackgroundColor(android.graphics.Color.YELLOW);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 

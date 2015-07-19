@@ -17,7 +17,10 @@ public class IntroActivity extends Activity {
 
     Button butNext;
     RadioButton RbTrain;
-    boolean Train;
+    RadioButton Rblevel;
+    RadioButton Rbsubject;
+    boolean train;
+    String level, subject;
 
 
     @Override
@@ -25,33 +28,45 @@ public class IntroActivity extends Activity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
-        //Intent i = new Intent(this, MusicService.class);
-        //startService(i);
         butNext=(Button)findViewById(R.id.button1);
-        butNext.setOnClickListener(new View.OnClickListener()
-        {
+        butNext.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                RadioGroup grp = (RadioGroup)findViewById(R.id.radioGroupSubject);
-                if(grp.getCheckedRadioButtonId() == -1)
-                {
-                    Toast.makeText(getApplicationContext(), "Πρέπει να επιλέξεις θεματολογία!",
+            public void onClick(View v) {
+                RadioGroup grp = (RadioGroup) findViewById(R.id.radioGroupSubject);
+                RadioGroup grplevel = (RadioGroup) findViewById(R.id.radioGrouplevel);
+                if (grp.getCheckedRadioButtonId() == -1) {
+                    Toast.makeText(getApplicationContext(), "Πρέπει να επιλέξεις θέμα!",
                             Toast.LENGTH_LONG).show();
-                }
-                else
-                {
-                    RbTrain = (RadioButton)findViewById(R.id.selfTrain);
+                } else {
+                    RbTrain = (RadioButton) findViewById(R.id.selfTrain);
+                    Rbsubject = (RadioButton) findViewById(R.id.math);
                     Intent intent = new Intent(IntroActivity.this, QuizActivity.class);
-                    Bundle Bu = new Bundle ();
-                    Train = RbTrain.isChecked();
-                    Bu.putBoolean("IsTraining", Train);
+                    Bundle Bu = new Bundle();
+                    train = RbTrain.isChecked();
+                    int id = grp.getCheckedRadioButtonId();
+                    //int idlevel = grplevel.getCheckedRadioButtonId();
+                    if (id == Rbsubject.getId()) {
+                        subject = "math";
+                    } else {
+                        subject = "physics";
+                    }
+                    level = "easy";
+                    Bu.putBoolean("IsTraining", train);
+                    Bu.putString("level", level);
+                    Bu.putString("subject", subject);
                     intent.putExtras(Bu);
                     startActivity(intent);
                     finish();
                 }
             }
         });
+    }
+
+
+    public void onClickMusic(View v)
+    {
+        Intent i = new Intent(this, MusicService.class);
+        startService(i);
     }
 
     @Override
@@ -66,15 +81,59 @@ public class IntroActivity extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+      switch (item.getItemId()) {
+            case R.id.music_on:
+                if (item.isChecked()) item.setChecked(false);
+                else
+                {item.setChecked(true);
+                Intent i = new Intent(this, MusicService.class);
+                Log.i("music", "music service started");
+                startService(i);
+                return true;}
+            case R.id.music_off:
+                if (item.isChecked()) item.setChecked(false);
+                else
+                {item.setChecked(true);
+                Intent in = new Intent(this, MusicService.class);
+                Log.i("music", "music service stopped");
+                stopService(in);
+                return true;}
+            case R.id.action_settings:
+                if (item.isChecked()) item.setChecked(false);
+                else
+                {item.setChecked(true);
+                //mainLayout.setBackgroundColor(android.graphics.Color.YELLOW);
+                return true;}
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
+
+
+
+
+
+
+
+
+    /*@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_red:
+                if (item.isChecked()) item.setChecked(false);
+                else item.setChecked(true);
+                mainLayout.setBackgroundColor(android.graphics.Color.RED);
+                return true;
+            case R.id.menu_green:
+                if (item.isChecked()) item.setChecked(false);
+                else item.setChecked(true);
+                mainLayout.setBackgroundColor(android.graphics.Color.GREEN);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }*/
 
     @Override
     protected void onDestroy()

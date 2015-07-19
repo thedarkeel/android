@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -30,6 +31,7 @@ public class QuizActivity extends Activity
     Button butNext;
     TextView timerTextView, wrong;
     public boolean train;
+    String level, subject;
 
 
     //runs without a timer by reposting this handler at the end of the runnable
@@ -55,7 +57,12 @@ public class QuizActivity extends Activity
         DataBaseHelper myDbHelper;
 
         myDbHelper = new DataBaseHelper(this);
-        quesList = myDbHelper.getAllQuestions();//εδώ πρέπει να αλλάξω ανάλογα με την επιλογή
+        Intent intent;
+        intent = getIntent();
+        train = intent.getBooleanExtra("IsTraining", true);
+        level = intent.getStringExtra("level");
+        subject = intent.getStringExtra ("subject");
+        quesList = myDbHelper.getAllQuestions(level, subject);//εδώ πρέπει να αλλάξω ανάλογα με την επιλογή
         currentQ=quesList.get(qid);
         txtQuestion=(TextView)findViewById(R.id.textView1);
         rda=(RadioButton)findViewById(R.id.radio0);
@@ -64,9 +71,7 @@ public class QuizActivity extends Activity
         butNext=(Button)findViewById(R.id.button1);
         wrong = (TextView)findViewById(R.id.answer);
         timerTextView = (TextView) findViewById(R.id.timerTextView);
-        Intent intent;
-        intent = getIntent ();
-        train = intent.getBooleanExtra ("IsTraining", true);
+
 
         setQuestionView(train);
         startTime = System.currentTimeMillis();
@@ -100,11 +105,19 @@ public class QuizActivity extends Activity
 
                     }
                     if (qid < 5)
-                    {
+                    {//putting some delay in order to review the answer
+                        //in absence of a better idea..
                         currentQ = quesList.get(qid);
-                        setQuestionView(train);
-                    }
-                    else
+                        v.postDelayed(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                setQuestionView(train);
+                            }
+                        }, 1000L);
+
+                    } else
                     {
                         Intent intent = new Intent(QuizActivity.this, ResultActivity.class);
                         Bundle b = new Bundle();
@@ -126,6 +139,39 @@ public class QuizActivity extends Activity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_quiz, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        switch (item.getItemId()) {
+            case R.id.music_on:
+                if (item.isChecked()) item.setChecked(false);
+                else
+                {item.setChecked(true);
+                    Intent i = new Intent(this, MusicService.class);
+                    Log.i("music", "music service started");
+                    startService(i);
+                    return true;}
+            case R.id.music_off:
+                if (item.isChecked()) item.setChecked(false);
+                else
+                {item.setChecked(true);
+                    Intent in = new Intent(this, MusicService.class);
+                    Log.i("music", "music service stopped");
+                    stopService(in);
+                    return true;}
+            case R.id.action_settings:
+                if (item.isChecked()) item.setChecked(false);
+                else item.setChecked(true);
+                //mainLayout.setBackgroundColor(android.graphics.Color.YELLOW);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setQuestionView(boolean mode)

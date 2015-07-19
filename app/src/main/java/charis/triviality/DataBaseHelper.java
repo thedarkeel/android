@@ -72,7 +72,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
         }
         catch(SQLiteException e)
         {
-            //database does't exist yet.
+            //database doesn't exist yet.
         }
 
         if(checkDB != null)
@@ -149,14 +149,24 @@ public class DataBaseHelper extends SQLiteOpenHelper
     // to you to create adapters for your views.
 
 
-    public List<Question> getAllQuestions()
+    public List<Question> getAllQuestions(String level, String subject)
     {
         List<Question> quesList = new ArrayList<>();
-        // Select All Query
         //myDataBase = this.getReadableDatabase();
         openDataBase();
-        String selectQuery = "SELECT  * FROM " + TABLE_NAME;
-        Cursor cursor = myDataBase.rawQuery(selectQuery, null);
+        String Query1 = "SELECT * FROM " + TABLE_NAME;// +" WHERE subject like " + "'" + subject + "'";
+        //+ " AND level like " + "'" +level+ "'";
+        //String Query1 = "SELECT * FROM " + TABLE_NAME +" WHERE level like ? AND subject like ?";
+
+        Log.i("skatakia", Query1);
+        Log.i("level", level);
+        Log.i("subject", subject);
+        String[] Query2;
+        //Query2 = new String [] {String.valueOf (level), String.valueOf (subject) };
+        //Query2 = new String [] {"hard", "physics"};
+
+        //Cursor cursor = myDataBase.rawQuery(Query1, new String[] {"hard", "math"});
+        Cursor cursor = myDataBase.rawQuery(Query1, null);
         // looping through all rows and adding to list
         if (cursor.moveToFirst())
         {
