@@ -26,15 +26,15 @@ public class DataBaseHelper extends SQLiteOpenHelper
     private final Context myContext;
 
     public DataBaseHelper(Context context)
-    {//Constructor. Takes and keeps a reference of the passed context in order to access to the application assets and resources.
-
+    {//Constructor. Takes and keeps a reference of the passed context in order to access
+    // the application assets and resources.
         super(context, DB_NAME, null, 1);
         this.myContext = context;
     }
 
     //Creates a empty database on the system and rewrites it with your own database.
 
-    public void createDataBase() throws IOException
+    /*public void createDataBase() throws IOException
     {//Creates a empty database on the system and rewrites it with your own database.
         boolean dbExist = checkDataBase();
 
@@ -55,7 +55,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
                 throw new Error("Error copying database");
             }
         }
-    }
+    }*/
 
     /**
      * Check if the database already exist to avoid re-copying the file each time you open the application.
@@ -81,7 +81,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
 
         }
 
-        return checkDB != null ? true : false;
+        return checkDB != null;
     }
 
     /**
@@ -127,7 +127,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
     public synchronized void close()
     {
 
-        if(myDataBase != null)
+        if (myDataBase != null)
         {
             myDataBase.close();
         }
@@ -144,12 +144,8 @@ public class DataBaseHelper extends SQLiteOpenHelper
     {
     }
 
-    // Add your public helper methods to access and get content from the database.
-    // You could return cursors by doing "return myDataBase.query(....)" so it'd be easy
-    // to you to create adapters for your views.
 
-
-    public List<Question> getAllQuestions(String level, String subject)
+    public List<Question> getQuestions(String level, String subject)
     {
         List<Question> quesList = new ArrayList<>();
         //myDataBase = this.getReadableDatabase();

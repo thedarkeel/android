@@ -34,10 +34,13 @@ public class IntroActivity extends Activity {
             public void onClick(View v) {
                 RadioGroup grp = (RadioGroup) findViewById(R.id.radioGroupSubject);
                 RadioGroup grplevel = (RadioGroup) findViewById(R.id.radioGrouplevel);
-                if (grp.getCheckedRadioButtonId() == -1) {
+                if (grp.getCheckedRadioButtonId() == -1)
+                {
                     Toast.makeText(getApplicationContext(), "Πρέπει να επιλέξεις θέμα!",
                             Toast.LENGTH_LONG).show();
-                } else {
+                }
+                else
+                {
                     RbTrain = (RadioButton) findViewById(R.id.selfTrain);
                     Rbsubject = (RadioButton) findViewById(R.id.math);
                     Intent intent = new Intent(IntroActivity.this, QuizActivity.class);

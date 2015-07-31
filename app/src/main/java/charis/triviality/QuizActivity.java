@@ -17,29 +17,23 @@ import android.widget.Toast;
 
 public class QuizActivity extends Activity
 {
-    int score=0;
-    int qid=0;
-    public String timeFinal;
-    long startTime = 0;
-    long millis = System.currentTimeMillis() - startTime;
-    int seconds = (int) (millis / 1000);
-    int minutes = seconds / 60;
+    int score=0, qid=0;
+    public String timeFinal, level, subject;
+    long startTime = 0, millis = System.currentTimeMillis() - startTime;
+    int seconds = (int) (millis / 1000), minutes = seconds / 60;
+    public boolean train;
     List<Question> quesList;
     Question currentQ;
     TextView txtQuestion;
     RadioButton rda, rdb, rdc;
     Button butNext;
     TextView timerTextView, wrong;
-    public boolean train;
-    String level, subject;
-
-
-    //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable()
     {
         @Override
-        public void run() {
+        public void run()
+        {
             millis = System.currentTimeMillis() - startTime;
             seconds = (int) (millis / 1000);
             minutes = seconds / 60;
@@ -55,14 +49,13 @@ public class QuizActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
         DataBaseHelper myDbHelper;
-
         myDbHelper = new DataBaseHelper(this);
         Intent intent;
         intent = getIntent();
         train = intent.getBooleanExtra("IsTraining", true);
         level = intent.getStringExtra("level");
         subject = intent.getStringExtra ("subject");
-        quesList = myDbHelper.getAllQuestions(level, subject);//εδώ πρέπει να αλλάξω ανάλογα με την επιλογή
+        quesList = myDbHelper.getQuestions(level, subject);//εδώ πρέπει να αλλάξω ανάλογα με την επιλογή
         currentQ=quesList.get(qid);
         txtQuestion=(TextView)findViewById(R.id.textView1);
         rda=(RadioButton)findViewById(R.id.radio0);
@@ -71,7 +64,6 @@ public class QuizActivity extends Activity
         butNext=(Button)findViewById(R.id.button1);
         wrong = (TextView)findViewById(R.id.answer);
         timerTextView = (TextView) findViewById(R.id.timerTextView);
-
 
         setQuestionView(train);
         startTime = System.currentTimeMillis();
@@ -117,7 +109,8 @@ public class QuizActivity extends Activity
                             }
                         }, 1000L);
 
-                    } else
+                    }
+                    else
                     {
                         Intent intent = new Intent(QuizActivity.this, ResultActivity.class);
                         Bundle b = new Bundle();
@@ -149,24 +142,40 @@ public class QuizActivity extends Activity
 
         switch (item.getItemId()) {
             case R.id.music_on:
-                if (item.isChecked()) item.setChecked(false);
+                if (item.isChecked())
+                {
+                    item.setChecked(false);
+                }
                 else
-                {item.setChecked(true);
+                {
+                    item.setChecked(true);
                     Intent i = new Intent(this, MusicService.class);
                     Log.i("music", "music service started");
                     startService(i);
-                    return true;}
+                    return true;
+                }
             case R.id.music_off:
-                if (item.isChecked()) item.setChecked(false);
+                if (item.isChecked())
+                {
+                    item.setChecked(false);
+                }
                 else
-                {item.setChecked(true);
+                {
+                    item.setChecked(true);
                     Intent in = new Intent(this, MusicService.class);
                     Log.i("music", "music service stopped");
                     stopService(in);
-                    return true;}
+                    return true;
+                }
             case R.id.action_settings:
-                if (item.isChecked()) item.setChecked(false);
-                else item.setChecked(true);
+                if (item.isChecked())
+                {
+                    item.setChecked(false);
+                }
+                else
+                {
+                    item.setChecked(true);
+                }
                 //mainLayout.setBackgroundColor(android.graphics.Color.YELLOW);
                 return true;
             default:
@@ -177,12 +186,12 @@ public class QuizActivity extends Activity
     private void setQuestionView(boolean mode)
     {
 
-        if (mode)
+       /* if (mode)
         {
             Log.i("training in view", "skata");
 
         }else{        Log.i("training in view", "skata2");
-        }
+        }*/
 
 
         txtQuestion.setText(currentQ.getQUESTION());
