@@ -188,9 +188,9 @@ public class QuizActivity extends Activity
 
        /* if (mode)
         {
-            Log.i("training in view", "skata");
+            Log.i("training in view", "log1");
 
-        }else{        Log.i("training in view", "skata2");
+        }else{        Log.i("training in view", "log2");
         }*/
 
 
